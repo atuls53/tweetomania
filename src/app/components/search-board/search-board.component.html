@@ -1,0 +1,170 @@
+
+<div class="wrapper">
+        <header class="main-header">
+          <!-- Logo -->
+          <a [routerLink]="['/dashboard']" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><b>S</b>T</span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>Search </b>Tweets</span>
+          </a>
+          <!-- Header Navbar: style can be found in header.less -->
+          <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a (click)="Sidebar();" id="seaarchButton" class="sidebar-toggle" data-toggle="push-menu" role="button">
+              <span class="sr-only">Toggle navigation</span>
+            </a>
+          </nav>
+         
+        </header>
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar">
+          <!-- sidebar: style can be found in sidebar.less -->
+          <section class="sidebar">
+            <!-- Sidebar user panel -->
+            <div class="user-panel">
+              <div class="pull-left image col-sm-12 mb-10">
+                  <a href="https://developer.twitter.com/en/docs/api-reference-index" target="_blanl">Search Help from Twitter</a>
+              </div>
+          
+            </div>
+            <!-- search form -->
+            <form  [formGroup]="searchForm" autocomplete="off" class="plr-15">
+              <div class="form-group">
+                <label for="">Search</label>
+                <input type="text" name="q" formControlName="query" class="form-control" placeholder="Search...">
+              </div>
+              <div class="form-group">
+                  <label for="">From</label>
+                  <input type="date" name="since" formControlName="since" class="form-control">
+                   <!-- <ng-datepicker formControlName="since" [options]="options"></ng-datepicker> -->
+              </div>
+              <div class="form-group">
+                  <label for="">To</label>
+                  <input type="date" name="until" formControlName="until" class="form-control">
+                  <!-- <ng-datepicker formControlName="until" [options]="options"></ng-datepicker> -->
+              </div>
+              <div class="form-group">
+                <label for="">Location</label>
+                <input class="form-control" formControlName="location" name="location" ngx-google-places-autocomplete #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)"/>
+                <!-- <input type="text" name="location" formControlName="location" class="form-control" placeholder="Location"> -->
+              </div>
+              <div class="form-group">
+                  <label for="">Radius</label>
+                  <input type="text" name="radius" formControlName="radius" class="form-control" placeholder="Radius(in miles)">
+              </div>
+              
+              
+              <!-- <div *ngIf="searchStart" class="loader"></div> -->
+            </form>
+            <button (click)="onSubmit()" class="btn btn-primary">Submit</button>
+            <button class="btn btn-primary" (click)="reset()">Reset</button>
+            <!-- /.search form -->
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+          </section>
+          <!-- /.sidebar -->
+        </aside>
+      
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+
+          <div class="panel-default">
+            <div class="panel-body">
+              <div class="panel-heading">
+                  <div class="row">
+
+                      <div class="col-sm-4">
+                          <div *ngIf="searchStart" class="loader"></div>
+                          <label *ngIf="copyTweets" style="font-size: 30px; margin-bottom: 0;" >Found {{copyTweets.length}} Tweets</label>
+                          <!-- <div *ngIf="searchStart" class="spinner">
+                            <div class="m-auto">
+                               <div class="bounce1 spinnerball"></div>
+                               <div class="bounce2 spinnerball"></div>
+                               <div class="bounce3 spinnerball"></div>
+                            </div>
+                           </div> -->
+                      </div>
+
+                      <div class="col-sm-8 text-right mt-7">
+                        <button class="btn btn-primary" (click)="filter('clear')">Clear Filter</button>
+                        <button class="btn btn-info" (click)="filter('hour', 1)">Last Hour</button>
+                        <button class="btn btn-success" (click)="filter('hour', 2)">Last 2 Hour</button>
+                        <button class="btn btn-warning" (click)="filter('hour', 5)">Last 5 Hour</button>
+                      </div>
+
+                     
+                    </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Start: Searching tab code -->
+          <div class="panel-default">
+                <div class="panel-body pt-0">
+                  <div class="panel-heading panel">
+                   
+                   <div class="table-responsove">
+
+                    <data-table pageSize='{{defaultFilter.pageSize}}' [totalItems]='totalTweets' sortField='{{defaultFilter.sortField}}' (onSearchClick)="search($event)" (onFilterChange)="onFilterChange($event)">
+                      <table id="datatable1" class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th class="text-left" colspan="7">Tweet Details</th>
+                                <th class="text-left" colspan="5">User Details</th>
+                            </tr>
+                            <tr class="bg-light-blue">
+                                <!-- Tweet Details -->
+                                <th class="list-header sort-header" sort-field="date">Date&nbsp;<i *ngIf="defaultFilter.sortField == 'date'" [ngClass]="{'fa':true, 'fa-sort-desc': defaultFilter.sortOrder, 'fa-sort-asc': !defaultFilter.sortOrder}"></i></th>
+                                <th class="list-header sort-header" sort-field="time">Time&nbsp;<i *ngIf="defaultFilter.sortField == 'time'" [ngClass]="{'fa':true, 'fa-sort-desc': defaultFilter.sortOrder, 'fa-sort-asc': !defaultFilter.sortOrder}"></i></th>
+                                <th class="list-header wd-115px">Screen Name</th>
+                                <th class="list-header">Name</th>
+                                <th class="list-header">Tweet</th>
+                                <th class="list-header sort-header" sort-field="retweet">Retweet&nbsp;<i *ngIf="defaultFilter.sortField == 'retweet'" [ngClass]="{'fa':true, 'fa-sort-desc': defaultFilter.sortOrder, 'fa-sort-asc': !defaultFilter.sortOrder}"></i></th>
+                                <th class="list-header sort-header" sort-field="likes">Likes&nbsp;<i *ngIf="defaultFilter.sortField == 'likes'" [ngClass]="{'fa':true, 'fa-sort-desc': defaultFilter.sortOrder, 'fa-sort-asc': !defaultFilter.sortOrder}"></i></th>
+                                
+                                <!-- User Detaials -->
+                                <th class=" list-header sort-header" sort-field="user.followers">Followers&nbsp;<i *ngIf="defaultFilter.sortField == 'user.followers'" [ngClass]="{'fa':true, 'fa-sort-desc': defaultFilter.sortOrder, 'fa-sort-asc': !defaultFilter.sortOrder}"></i></th>
+                                <th class="list-header sort-header" sort-field="user.follows">Follows&nbsp;<i *ngIf="defaultFilter.sortField == 'user.follows'" [ngClass]="{'fa':true, 'fa-sort-desc': defaultFilter.sortOrder, 'fa-sort-asc': !defaultFilter.sortOrder}"></i></th>
+                                <th class="list-header sort-header" sort-field="user.favourities">Favourite&nbsp;<i *ngIf="defaultFilter.sortField == 'user.favourities'" [ngClass]="{'fa':true, 'fa-sort-desc': defaultFilter.sortOrder, 'fa-sort-asc': !defaultFilter.sortOrder}"></i></th>
+                                <th class="list-header">Location</th>
+                                <th class="list-header">Member Since</th>
+                            </tr>
+                        </thead>
+                      
+                        <tbody *ngIf="copyTweets">
+                            <tr *ngFor="let tweet of copyTweets | slice: startIndex: endIndex; let i=index">
+                                <!-- Tweet Details -->
+                                <td style="width: 7%;">{{ tweet.dateTime | date }}</td>
+                                <td style="width: 8%;">{{ tweet.dateTime | date:'h:mm:ss a'}}</td>
+                                <td><a href="https://twitter.com/{{tweet.screenName}}" target="_blank">@{{ tweet.screenName }}</a></td>
+                                <td>{{ tweet.name }}</td>
+                                <td><a href="https://twitter.com/{{tweet.screenName}}/status/{{tweet.tweetId}}" target="_blank">{{ tweet.tweet }}</a></td>
+                                <td>{{ tweet.retweet }}</td>
+                                <td>{{ tweet.likes }}</td>
+            
+                                <!-- User Detaials -->
+                                <td class="user-data">{{ tweet.user.followers }}</td>
+                                <td class="user-data">{{ tweet.user.follows }}</td>
+                                <td class="user-data">{{ tweet.user.favourities }}</td>
+                                <td class="user-data">{{ tweet.user.location }}</td>
+                                <td style="width: 7%;" class="user-data">{{ tweet.user.memberSince | date }}</td>
+                            </tr>
+                        </tbody>
+                        <tbody  *ngIf="copyTweets?.length<1 && !searchStart">
+                          <tr>
+                              <td colspan="5"></td>
+                              <td colspan="7">Search some tweets to display data.</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </data-table>
+                  </div>
+                  </div>
+                </div>
+          </div>
+          <!-- End: Searching tab code -->
+        </div>
+        <!-- /.content-wrapper -->
+      
+       
+      </div>
