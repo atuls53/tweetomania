@@ -14,8 +14,16 @@ export class TweetService {
     return this.http.post( `${this.constService.baseUrl}/search/`, data);
   }
 
+  
+    
+
   downloadFile(data, filename='data') {
-    let csvData = this.ConvertToCSV(data, ['name','age', 'average', 'approved', 'description']);
+    let csvData = this.ConvertToCSV(data, ['date','dateTime', 'screenName', 'tweet', 'retweet', 'likes', 'followers', 
+    
+    'follows',
+    'favourities',
+    'location',
+    'memberSince']);
     console.log(csvData)
     let blob = new Blob(['\ufeff' + csvData], { type: 'text/csv;charset=utf-8;' });
     let dwldLink = document.createElement("a");
