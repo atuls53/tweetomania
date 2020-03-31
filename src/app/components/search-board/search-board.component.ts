@@ -154,6 +154,12 @@ export class SearchBoardComponent implements OnInit {
   }
 
   curEventStream:any;
+
+
+
+  exportData(){
+    this.TweetService.downloadFile(this.tweets, 'jsontocsv');
+  }
   searchTweets(channel) {
     this.totalTweets = 0;
     this.tweets = [] 
@@ -166,10 +172,11 @@ export class SearchBoardComponent implements OnInit {
         if(arg['data']['status']=="DONE")
           this.searchStart = false;
         this.tweets = this.tweets.concat(arg['data']['tweets']);
-        // console.log(this.tweets)
+        console.log(this.tweets)
         this.totalTweets += arg['data']['tweet_count'];
-        // console.log(arg)
+        console.log(this.copyTweets)
         this.copyTweets = this.tweets;
+       
       }
     });
   }
