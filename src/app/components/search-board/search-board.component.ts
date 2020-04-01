@@ -162,7 +162,7 @@ export class SearchBoardComponent implements OnInit {
     var copiedTweet = {};
 
 
-    this.copyTweets.array.forEach(element => {
+    this.copyTweets.forEach(element => {
       for( var key in element){
         if(key === 'user') {
           for( var keyUser in element[key]){ 
