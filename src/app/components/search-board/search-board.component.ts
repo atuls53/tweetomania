@@ -159,11 +159,13 @@ export class SearchBoardComponent implements OnInit {
 
   exportData(){
 
-    var copiedTweet = {};
+    var copiedTweets = [];
 
 
     this.copyTweets.forEach(element => {
+      
       for( var key in element){
+        var copiedTweet = {};
         if(key === 'user') {
           for( var keyUser in element[key]){ 
   
@@ -174,13 +176,15 @@ export class SearchBoardComponent implements OnInit {
           copiedTweet[key] = element[key];
         }
   
+        copiedTweets.push(copiedTweet)
       }
   
+
     });
 
  
-    console.log('this.copyTweets-->', copiedTweet);
-    this.TweetService.downloadFile(copiedTweet, 'jsontocsv');
+    console.log('this.copyTweets-->', copiedTweets);
+    this.TweetService.downloadFile(copiedTweets, 'jsontocsv');
   }
   searchTweets(channel) {
     this.totalTweets = 0;
