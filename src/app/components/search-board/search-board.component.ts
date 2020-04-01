@@ -158,7 +158,8 @@ export class SearchBoardComponent implements OnInit {
 
 
   exportData(){
-    this.TweetService.downloadFile(this.tweets, 'jsontocsv');
+    console.log('this.copyTweets-->', this.copyTweets);
+    // this.TweetService.downloadFile(this.copyTweets, 'jsontocsv');
   }
   searchTweets(channel) {
     this.totalTweets = 0;
