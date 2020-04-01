@@ -158,7 +158,28 @@ export class SearchBoardComponent implements OnInit {
 
 
   exportData(){
-    console.log('this.copyTweets-->', this.copyTweets);
+
+    var copiedTweet = {};
+
+
+    this.copyTweets.array.forEach(element => {
+      for( var key in element){
+        if(key === 'user') {
+          for( var keyUser in element[key]){ 
+  
+            copiedTweet[keyUser] =  element[key][keyUser]
+  
+          }
+        } else {
+          copiedTweet[key] = element[key];
+        }
+  
+      }
+  
+    });
+
+ 
+    console.log('this.copyTweets-->', copiedTweet);
     // this.TweetService.downloadFile(this.copyTweets, 'jsontocsv');
   }
   searchTweets(channel) {
