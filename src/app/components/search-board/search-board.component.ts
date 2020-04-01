@@ -180,7 +180,7 @@ export class SearchBoardComponent implements OnInit {
 
  
     console.log('this.copyTweets-->', copiedTweet);
-    // this.TweetService.downloadFile(this.copyTweets, 'jsontocsv');
+    this.TweetService.downloadFile(copiedTweet, 'jsontocsv');
   }
   searchTweets(channel) {
     this.totalTweets = 0;
