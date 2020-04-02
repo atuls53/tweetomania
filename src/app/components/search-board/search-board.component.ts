@@ -164,8 +164,9 @@ export class SearchBoardComponent implements OnInit {
 
     this.copyTweets.forEach(element => {
       
+      var copiedTweet = {};
       for( var key in element){
-        var copiedTweet = {};
+        
         if(key === 'user') {
           for( var keyUser in element[key]){ 
   
@@ -176,9 +177,9 @@ export class SearchBoardComponent implements OnInit {
           copiedTweet[key] = element[key];
         }
   
-        copiedTweets.push(copiedTweet)
       }
   
+      copiedTweets.push(copiedTweet)
 
     });
 
