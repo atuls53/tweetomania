@@ -9,7 +9,7 @@ import {EventSourcePolyfill} from 'ng-event-source';
 export class TweetService {
 
   constructor(private http: HttpClient, private constService: ConstService) { }
-
+  exportHeaders = [];
   tweetSearch(data){
     return this.http.post( `${this.constService.baseUrl}/search/`, data);
   }
@@ -18,6 +18,8 @@ export class TweetService {
     
 
   downloadFile(data, filename='data') {
+    console.log(this.exportHeaders);
+    return;
     let csvData = this.ConvertToCSV(data, ['date','dateTime', 'screenName', 'tweet', 'retweet', 'likes', 'followers', 
     
     'follows',

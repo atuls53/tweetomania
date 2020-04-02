@@ -161,7 +161,7 @@ export class SearchBoardComponent implements OnInit {
 
     var copiedTweets = [];
 
-
+    let that = this;
     this.copyTweets.forEach(element => {
       
       var copiedTweet = {};
@@ -169,11 +169,12 @@ export class SearchBoardComponent implements OnInit {
         
         if(key === 'user') {
           for( var keyUser in element[key]){ 
-  
+            that.TweetService.exportHeaders.push(keyUser);
             copiedTweet[keyUser] =  element[key][keyUser]
   
           }
         } else {
+          that.TweetService.exportHeaders.push(key);
           copiedTweet[key] = element[key];
         }
   
