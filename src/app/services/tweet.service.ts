@@ -20,7 +20,7 @@ export class TweetService {
   downloadFile(data, filename='data') {
     console.log(this.exportHeaders);
   
-    let csvData = this.ConvertToCSV(data, this.exportHeaders);
+    let csvData = this.ConvertToCSV(data, ["dateTime", "date", "time", "screenName", "name", "tweetId", "tweet", "retweet", "source", "likes", "followers", "follows", "favourities", "location", "memberSince"]);
     console.log(csvData)
     let blob = new Blob(['\ufeff' + csvData], { type: 'text/csv;charset=utf-8;' });
     let dwldLink = document.createElement("a");
@@ -48,7 +48,7 @@ ConvertToCSV(objArray, headerList) {
      row = row.slice(0, -1);
      str += row + '\r\n';
      for (let i = 0; i < array.length; i++) {
-         let line = (i+1)+'';
+         let line = '';
          for (let index in headerList) {
             let head = headerList[index];
 
