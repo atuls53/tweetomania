@@ -19,13 +19,8 @@ export class TweetService {
 
   downloadFile(data, filename='data') {
     console.log(this.exportHeaders);
-    return;
-    let csvData = this.ConvertToCSV(data, ['date','dateTime', 'screenName', 'tweet', 'retweet', 'likes', 'followers', 
-    
-    'follows',
-    'favourities',
-    'location',
-    'memberSince']);
+  
+    let csvData = this.ConvertToCSV(data, this.exportHeaders);
     console.log(csvData)
     let blob = new Blob(['\ufeff' + csvData], { type: 'text/csv;charset=utf-8;' });
     let dwldLink = document.createElement("a");
